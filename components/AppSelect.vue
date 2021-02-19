@@ -4,7 +4,7 @@
     <select
       :id="selectFor"
       :name="selectFor"
-      @change="$emit('onSelect', $event.target.value)"
+      @change="$emit('onSelectChange', $event.target.value)"
     >
       <option disabled selected>Please pick one</option>
       <option v-for="option in selectOptions" :key="option" :value="option">

@@ -1,12 +1,14 @@
 <template>
   <section class="restaurantinfo">
     <h1>Restaurants</h1>
-    <AppSelect @onSelect="selectedRestaurant = $event" />
+    <AppSelect @onSelectChange="selectedRestaurant = $event" />
     <br />
     <hr />
     <br />
     <div v-for="item in filteredRestaurantInfos" :key="item.id">
-      <h2>{{ item.name }}</h2>
+      <h2>
+        {{ item.name }}
+      </h2>
       <p>Delivery Time: {{ item.deliveryTime }}</p>
       <p>Rating: {{ item.rating }}</p>
       <p v-if="item.freeDelivery" class="label">
@@ -21,10 +23,14 @@
         >
           <div class="iteminfo">
             <div>
-              <h4>{{ menuItem.item }}</h4>
+              <h4>
+                {{ menuItem.item }}
+              </h4>
               <p>{{ priceFormatting(menuItem.price) }}</p>
             </div>
-            <button class="ghost">View Restaurant</button>
+            <nuxt-link :to="`/items/${menuItem.id}`">
+              <button class="ghost">View Restaurant</button>
+            </nuxt-link>
           </div>
         </div>
       </div>

@@ -1,23 +1,15 @@
 <template>
   <div>
-    <section class="masthead" role="img" aria-label="Image Description">
+    <section class="masthead" role="img" aria-label="Food app hero background">
       <div class="masthead__content">
         <h1>Nuxt Food App</h1>
-        <button @click="toRestaurantsPage">See Restaurant</button>
+        <nuxt-link to="/restaurants">
+          <button>See Restaurant</button>
+        </nuxt-link>
       </div>
     </section>
   </div>
 </template>
-
-<script>
-export default {
-  methods: {
-    toRestaurantsPage() {
-      window.location.replace('/restaurants')
-    },
-  },
-}
-</script>
 
 <style lang="scss" scoped>
 .masthead {
