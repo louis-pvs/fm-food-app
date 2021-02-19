@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <AppHeader />
-    <AppRestaurants />
+    <AppRestaurants :datasource="restaurantInfos" />
   </main>
 </template>
 
@@ -12,6 +12,11 @@ export default {
   components: {
     AppHeader,
     AppRestaurants,
+  },
+  computed: {
+    restaurantInfos() {
+      return this.$store.state.fooddata
+    },
   },
 }
 </script>

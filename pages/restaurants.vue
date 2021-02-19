@@ -1,6 +1,6 @@
 <template>
   <main class="container restaurant">
-    <AppRestaurants />
+    <AppRestaurants :datasource="restaurantInfos" />
   </main>
 </template>
 
@@ -9,6 +9,11 @@ import AppRestaurants from '@/components/AppRestaurants.vue'
 export default {
   components: {
     AppRestaurants,
+  },
+  computed: {
+    restaurantInfos() {
+      return this.$store.state.fooddata
+    },
   },
 }
 </script>

@@ -1,18 +1,20 @@
 <template>
   <section class="restaurantinfo">
     <h1>Restaurants</h1>
+    <AppSelect @onSelect="selectedRestaurant = $event" />
+    <br />
     <hr />
     <br />
-    <div v-for="restaurantInfo in restaurantInfos" :key="restaurantInfo.id">
-      <h2>{{ restaurantInfo.name }}</h2>
-      <p>Delivery Time: {{ restaurantInfo.deliveryTime }}</p>
-      <p>Rating: {{ restaurantInfo.rating }}</p>
-      <p v-if="restaurantInfo.freeDelivery" class="label">
+    <div v-for="item in filteredRestaurantInfos" :key="item.id">
+      <h2>{{ item.name }}</h2>
+      <p>Delivery Time: {{ item.deliveryTime }}</p>
+      <p>Rating: {{ item.rating }}</p>
+      <p v-if="item.freeDelivery" class="label">
         <span>Free Delivery</span>
       </p>
       <div class="row">
         <div
-          v-for="menuItem in restaurantInfo.menu"
+          v-for="menuItem in item.menu"
           :key="menuItem.id"
           class="items"
           :style="`background: url('/${menuItem.img}') no-repeat center center;`"
@@ -31,10 +33,32 @@
 </template>
 
 <script>
+import AppSelect from '@/components/AppSelect.vue'
+
 export default {
+  components: {
+    AppSelect,
+  },
+  props: {
+    datasource: {
+      type: [Array, Object],
+      required: true,
+    },
+  },
+  data() {
+    return {
+      selectedRestaurant: '',
+    }
+  },
   computed: {
-    restaurantInfos() {
-      return this.$store.state.fooddata
+    filteredRestaurantInfos() {
+      if (this.selectedRestaurant) {
+        return this.datasource.filter((restaurantInfo) => {
+          const restaurantName = restaurantInfo.name.toLowerCase()
+          return restaurantName.includes(this.selectedRestaurant.toLowerCase())
+        })
+      }
+      return this.datasource
     },
   },
   methods: {
