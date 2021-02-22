@@ -19,7 +19,8 @@
     "axios": "^0.21.1",
     "core-js": "^3.8.3",
     "nuxt": "^2.14.12",
-    "tachyons": "^4.12.0"
+    "tachyons": "^4.12.0",
+    "uuidv4": "^6.2.6"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^5.0.0",

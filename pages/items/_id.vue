@@ -16,6 +16,16 @@
           {{ currentItem.item }}
         </h2>
         <h3>Price: {{ priceFormatting(currentItem.price) }}</h3>
+        <AppToaster v-if="cartAdded">
+          <p>
+            <strong>{{ currentItem.item }}</strong> added to cart!
+          </p>
+          <p>
+            <nuxt-link to="/restaurants"
+              >Have a look on other restaurants</nuxt-link
+            >
+          </p>
+        </AppToaster>
         <div class="quantity">
           <input
             id="quantity"
@@ -24,8 +34,8 @@
             name="quantity"
             min="1"
           />
-          <button class="primary">
-            Add to Cart - {{ priceFormatting(currentItem.price * quantity) }}
+          <button class="primary" @click="addToCart">
+            Add to Cart - {{ priceFormatting(subtotal) }}
           </button>
         </div>
         <AppRadioGroup
@@ -34,11 +44,12 @@
           :radio-options="currentItem.options"
           @onRadioChange="selectedOption = $event"
         />
-        <AppRadioGroup
+        <AppCheckboxGroup
           v-if="currentItem.addOns"
-          radio-for="Add Ons"
-          :radio-options="currentItem.addOns"
-          @onRadioChange="selectedAddOn = $event"
+          input-type="checkbox"
+          checkbox-for="Add Ons"
+          :checkbox-options="currentItem.addOns"
+          @onRadioChange="selectedAddOns.push($event)"
         />
       </section>
     </div>
@@ -47,22 +58,30 @@
 
 <script>
 import AppRadioGroup from '@/components/AppRadioGroup.vue'
+import AppToaster from '@/components/AppToaster.vue'
+import AppCheckboxGroup from '@/components/AppCheckboxGroup.vue'
 
 export default {
   components: {
     AppRadioGroup,
+    AppCheckboxGroup,
+    AppToaster,
   },
   data() {
     return {
       id: this.$route.params.id,
       quantity: 1,
       selectedOption: '',
-      selectedAddOn: '',
+      selectedAddOns: [],
+      cartAdded: false,
     }
   },
   computed: {
     restaurantInfos() {
       return this.$store.state.fooddata
+    },
+    subtotal() {
+      return this.currentItem.price * this.quantity
     },
     currentItem() {
       let item
@@ -80,6 +99,18 @@ export default {
   },
 
   methods: {
+    addToCart() {
+      this.cartAdded = true
+      const newFoodToCart = {
+        id: this.currentItem.id,
+        item: this.currentItem.item,
+        quantity: this.quantity,
+        option: this.selectedOption,
+        addOns: this.selectedAddOns,
+        subtotal: this.subtotal,
+      }
+      this.$store.commit('addFoodToCart', newFoodToCart)
+    },
     priceFormatting: (amount) => `$${amount.toFixed(2)}`,
   },
 }

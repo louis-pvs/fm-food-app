@@ -3,17 +3,21 @@ import axios from 'axios'
 export const state = () => ({
   fooddata: [],
   errorMessage: '',
+  cart: [],
 })
 
-// export const getters = {
-//   getterValue: (state) => {
-//     return state.value
-//   },
-// }
+export const getters = {
+  totalAmount: (state) => {
+    if (!state.cart) return 0
+    return state.cart.reduce((total, item) => total + +item.subtotal, 0)
+  },
+  cartQuantity: (state) => 0 || state.cart.length,
+}
 
 export const mutations = {
   setFooddata: (state, payload) => (state.fooddata = payload),
   setErrorMsg: (state, payload) => (state.errorMessage = payload),
+  addFoodToCart: (state, payload) => state.cart.push(payload),
 }
 
 export const actions = {
